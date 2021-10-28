@@ -21,14 +21,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun speak(){
-        var message: String = findViewById<TextView>(R.id.tvStatus).text.toString()
+        var message: String = findViewById<TextView>(R.id.etMessage).text.toString()
         tts!!.speak(message,TextToSpeech.QUEUE_FLUSH,null, "")
     }
 
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS){
             findViewById<TextView>(R.id.tvStatus).text = "Hello Kotlin!"
-            tts!!.setLanguage(Locale.US)
+            tts!!.setLanguage(Locale("ES"))
         }else{
             findViewById<TextView>(R.id.tvStatus).text = "No disponible :("
         }
