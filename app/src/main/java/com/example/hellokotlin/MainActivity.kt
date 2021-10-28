@@ -3,6 +3,7 @@ package com.example.hellokotlin
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.TextUtils.isEmpty
 import android.widget.Button
 import android.widget.TextView
 import java.util.*
@@ -22,15 +23,29 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun speak(){
         var message: String = findViewById<TextView>(R.id.etMessage).text.toString()
+
+        if (message == ""){
+            findViewById<TextView>(R.id.tvStatus).text = "Introduzca un texto!"
+            message = "¿Es en serio? Ya pon algo en el edit text!"
+        }
+
         tts!!.speak(message,TextToSpeech.QUEUE_FLUSH,null, "")
     }
 
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS){
-            findViewById<TextView>(R.id.tvStatus).text = "Hello Kotlin!"
+            findViewById<TextView>(R.id.tvStatus).text = "Listo!"
             tts!!.setLanguage(Locale("ES"))
         }else{
             findViewById<TextView>(R.id.tvStatus).text = "No disponible :("
         }
+    }
+
+    override fun onDestroy() {
+        if (tts != null) {
+            tts!!.stop()
+            tts!!.shutdown()
+        }
+        super.onDestroy()
     }
 }
